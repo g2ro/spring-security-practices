@@ -1,14 +1,32 @@
 package config.web;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.web.DefaultSecurityFilterChain;
+import org.springframework.security.web.FilterChainProxy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 import filter.SecurityFilterEx01;
 import filter.SecurityFilterEx02;
 import filter.SecurityFilterEx03;
 import filter.SecurityFilterEx04;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SecurityConfigEx02 {
+	@Bean
+	public FilterChainProxy securityFilterChainProxy() { // filterChainProxy를 만들 때 securityFilterChainProxy로 자동으로 생성하기
+															// 때문에 method를 잘 지정해야함.
+		List<SecurityFilterChain> securityFileterChains = Arrays.asList(
+			new DefaultSecurityFilterChain(new AntPathRequestMatcher("/hello/**"), securityFilterEx01(), securityFilterEx02()),
+			new DefaultSecurityFilterChain(new AntPathRequestMatcher("/ping/**"), securityFilterEx03(), securityFilterEx04())
+		);
+					return new FilterChainProxy(securityFileterChains);
+	}
+	
     @Bean
     public SecurityFilterEx01 securityFilterEx01() {
         return new SecurityFilterEx01();
