@@ -1,4 +1,4 @@
-package config.web;
+package config.app;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfigEx03 {
+public class SecurityConfigEx04 {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return new WebSecurityCustomizer() {
@@ -26,6 +26,14 @@ public class SecurityConfigEx03 {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.build();
+        http
+        	.formLogin((formLogin) -> {})
+        	.authorizeHttpRequests((authorizeRequests) -> {
+        		/* ACL */
+        		authorizeRequests
+        			.anyRequest()
+        			.authenticated();
+        	});
+    	return http.build();
     }
 }
