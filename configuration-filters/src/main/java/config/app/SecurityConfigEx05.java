@@ -27,6 +27,20 @@ public class SecurityConfigEx05 {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.build();
+        http
+        	.formLogin((formLogin) -> {
+        		formLogin.loginPage("/user/login"); // loginPage를 default에 의해 생성되는 것이 아닌 개발자가 생성한다는 뜻 // 해당 조건을 설정했다면 controller에서 해당 url를 처리할 로직을 작성야한다.
+        	})
+        	.authorizeHttpRequests((authorizeRequests) -> {
+        		/* ACL */
+        		authorizeRequests
+        			.requestMatchers(new RegexRequestMatcher("^/board/?(write|delete|modify|reply).*$", null)) // ^ $ : 시작과 끝을 의미함. // ?(write|delete|modify|reply) board뒤에 올 수 있는 path 작성, 전부 없어도 괜찮
+        			.authenticated()
+        			
+        			.anyRequest()
+        			.permitAll();
+        	});
+    	return http.build();
     }
+
 }
