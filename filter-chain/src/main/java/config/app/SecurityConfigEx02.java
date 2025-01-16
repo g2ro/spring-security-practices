@@ -1,4 +1,4 @@
-package config.web;
+package config.app;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +18,7 @@ import filter.SecurityFilterEx04;
 @Configuration
 public class SecurityConfigEx02 {
 	@Bean
-	public FilterChainProxy securityFilterChainProxy() { // filterChainProxy를 만들 때 securityFilterChainProxy로 자동으로 생성하기
+	public FilterChainProxy springSecurityFilterChain() { // filterChainProxy를 만들 때 securityFilterChainProxy로 자동으로 생성하기
 															// 때문에 method를 잘 지정해야함.
 		List<SecurityFilterChain> securityFileterChains = Arrays.asList(
 			new DefaultSecurityFilterChain(new AntPathRequestMatcher("/hello/**"), securityFilterEx01(), securityFilterEx02()),
